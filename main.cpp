@@ -1,7 +1,6 @@
 #include<glut.h>
 #include<cmath>
 #include<iostream>
-
 #define PI 3.14159265f
 
 GLfloat ballRadius = 0.2;
@@ -18,8 +17,8 @@ int score = 0;
 int cur_mx = 0, cur_my = 0;
 int arcball_on = false;
 GLdouble clipAreaXLeft, clipAreaXRight, clipAreaYBottom, clipAreaYTop;
-GLdouble windowWidth = 500;
-GLdouble windowHeight = 500;
+GLdouble windowWidth = 800;
+GLdouble windowHeight = 800;
 
 void color()
 {
@@ -77,12 +76,13 @@ void balldisp()
         ySpeed = -ySpeed;
 
     }
-
-    if (ballY == ballYMin)
-    { 
+    if (ballY == ballYMin) {
+    
         std::cout << "Final Score:" << score << std::endl;
         exit(0);
+    
     }
+
 }
 
 void scoredisp()
@@ -163,20 +163,21 @@ void Timer(int value)
     glutTimerFunc(refreshMills, Timer, 5);
 }
 
-void onMouse(int button, int state, int x, int y) /// I want help here to detect mouse over the ball
+
+void onMouse(int button, int state, int x, int y)
 {
     cur_mx = x;
     cur_my = y;
-    GLfloat X = (-((float)windowWidth / 2) + float(cur_mx)) / (float)windowWidth;
-    GLfloat Y = (+((float)windowHeight / 2) - float(cur_my)) / (float)windowHeight;
-    ballRadius = float(ballRadius);
+    GLfloat X = ((-((float)windowWidth / 2) + float(cur_mx)) / (float)(windowWidth))*2;
+    GLfloat Y = ((+((float)windowHeight / 2) - float(cur_my)) / (float)(windowHeight))*2;
+
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
         arcball_on = true;
-        if ((X >= ballXMin && Y >= ballYMin) && (X >= ballXMin && Y <= ballYMax) &&
-            (X <= ballXMax && Y >= ballYMin) && (X <= ballXMax && Y <= ballYMax))
+        if ((X >= (ballX - ballRadius) && Y >= (ballY - ballRadius)) && (X >= (ballX - ballRadius) && Y <= (ballY + ballRadius)) &&
+            (X <= (ballX + ballRadius) && Y >= (ballY - ballRadius)) && (X <= (ballX + ballRadius) && Y <= (ballY + ballRadius)))
         {
-            xSpeed += 0.002;
+            xSpeed += 0.01;
             ySpeed += 0.02;
         }
     }
@@ -185,8 +186,8 @@ void onMouse(int button, int state, int x, int y) /// I want help here to detect
     else
     {
         arcball_on = false;
-        if ((X >= ballXMin && Y >= ballYMin) && (X >= ballXMin && Y <= ballYMax) &&
-            (X <= ballXMax && Y >= ballYMin) && (X <= ballXMax && Y <= ballYMax))
+        if ((X >= (ballX - ballRadius) && Y >= (ballY - ballRadius)) && (X >= (ballX - ballRadius) && Y <= (ballY + ballRadius)) &&
+            (X <= (ballX + ballRadius) && Y >= (ballY - ballRadius)) && (X <= (ballX + ballRadius) && Y <= (ballY + ballRadius)))
         {
             score += 1;
         }
@@ -198,7 +199,7 @@ int main(int argc, char* argv[])
 {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-    glutInitWindowSize(500, 500);
+    glutInitWindowSize(800, 800);
     glutInitWindowPosition(100, 100);
     glutCreateWindow("Bouncing Ball");
     glutMouseFunc(onMouse);
