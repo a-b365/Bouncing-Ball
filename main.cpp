@@ -1,6 +1,7 @@
 #include<glut.h>
 #include<cmath>
 #include<iostream>
+
 #define PI 3.14159265f
 
 GLfloat ballRadius = 0.2;
@@ -12,9 +13,9 @@ GLfloat ySpeed = 0.007f;
 GLfloat xAcceleration = 0.0000f;
 GLfloat yAcceleration = -0.0005f;
 int refreshMills = 30;
-int x1, xa, ya;
+int xa, ya;
 int score = 0;
-int last_mx = 0, last_my = 0, cur_mx = 0, cur_my = 0;
+int cur_mx = 0, cur_my = 0;
 int arcball_on = false;
 GLdouble clipAreaXLeft, clipAreaXRight, clipAreaYBottom, clipAreaYTop;
 GLdouble windowWidth = 500;
@@ -27,7 +28,6 @@ void color()
     else
         glColor3ub(rand() % 250, rand() % 250, rand() % 250);
 }
-
 void balldisp()
 {
     glTranslatef(ballX, ballY, 0.0f);
@@ -77,10 +77,10 @@ void balldisp()
         ySpeed = -ySpeed;
 
     }
-    std::cout<< ballY << std::endl;
 
-    if (ballY <= ballYMin)
+    if (ballY == ballYMin)
     { 
+        std::cout << "Final Score:" << score << std::endl;
         exit(0);
     }
 }
@@ -157,7 +157,6 @@ void reshape(GLsizei width, GLsizei height)
     ballYMin = clipAreaYBottom + ballRadius;
     ballYMax = clipAreaYTop - ballRadius;
 }
-
 void Timer(int value)
 {
     glutPostRedisplay();
